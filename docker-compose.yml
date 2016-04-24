@@ -1,0 +1,27 @@
+version: '2'
+services:
+  mynginx:
+    build: ./nginx
+    links: 
+     - myphpfpm
+    volumes:
+     - /home/docker/nginx/conf:/etc/nginx
+     - /home/docker/www:/var/www
+     - /home/docker/logs:/var/log
+    depends_on:
+     - myphpfpm
+  myphpfpm:
+    build: ./phpfpm
+    links:
+        - mysqldb
+    volumes:
+        - /home/docker/www:/var/www
+    depends_on:
+        - mysqldb
+  mysqldb:
+    image: mysql
+    environment:
+        - MYSQL_ROOT_PASSWORD=rootpwd
+        - MYSQL_DATABASE=maindb
+        - MYSQL_USER=link0ln
+        - MYSQL_PASSWORD=RaNd0m
